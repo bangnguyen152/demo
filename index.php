@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1 align="center">Báo Dân Trí</h1>
+    <?php
+    require "connect.php";
+    $search_key = "";
+    if (isset($_GET['search_box'])){
+        $search_key = $_GET['search_box'];
+    }
+
+    $sql = "select * from tin_tuc where tieu_de like '%$search_key%'";
+    $result = mysqli_query($conn,$sql);
+    ?>
+    <table border="1" width="100%">
+        <caption>
+            <form action="">
+                <input type="search" name="search_box" value="<?php echo $search_key ?>" >
+            </form>
+        </caption>
+        <a href="insert.php"> Thêm bài viết </a>
+        <tr>
+            <th>Tên Bài</th>
+            <th>Ảnh</th>
+            <th>Sửa</th>
+            <th>Xóa</th>
+        </tr>
+        <?php foreach ($result as $each_result){ ?>
+            <tr>
+                <td>
+                    <a href="view.php?ma=<?php echo $each_result['Ma'] ?>">
+                        <?php echo $each_result['tieu_de'] ?>
+                    </a>
+                </td>
+                <td align="center"><img src="<?php echo $each_result['anh'] ?>" alt="demo" height="160"></td>
+                <td>
+                    <a href="update.php?ma=<?php echo $each_result['Ma']?>">Sửa</a>
+                </td>
+                <td>
+                    <a href="delete.php?ma=<?php echo $each_result['Ma']?>">Xóa</a>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+</body>
+</html>
